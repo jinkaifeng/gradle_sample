@@ -1,0 +1,9 @@
+dependencies {
+    compile (project(':myproj-core')) {
+        exclude group: 'org.springframework.data'
+        exclude group: 'redis.clients'
+    }
+
+    compile 'org.springframework.data:spring-data-redis:1.6.2.RELEASE',
+            'redis.clients:jedis:2.7.0'
+}

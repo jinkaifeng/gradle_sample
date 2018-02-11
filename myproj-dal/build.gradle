@@ -1,0 +1,4 @@
+//dependencies {
+//    compile (project(':myproj-common'),
+//            'com.alibaba:druid:1.1.7')
+//}

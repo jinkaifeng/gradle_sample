@@ -1,0 +1,8 @@
+//dependencies {
+//
+//    compile 'org.springframework.data:spring-data-redis:1.6.2.RELEASE',
+//            'redis.clients:jedis:2.7.0',
+//            'com.baomidou:mybatis-plus:2.1.9',
+//            'mysql:mysql-connector-java:5.1.45'
+//
+//}
