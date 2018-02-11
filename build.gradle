@@ -28,18 +28,6 @@ allprojects {
         jcenter()
     }
 
-    compileKotlin {
-        kotlinOptions {
-            freeCompilerArgs = ["-Xjsr305=strict"]
-            jvmTarget = "1.8"
-        }
-    }
-    compileTestKotlin {
-        kotlinOptions {
-            freeCompilerArgs = ["-Xjsr305=strict"]
-            jvmTarget = "1.8"
-        }
-    }
 }
 
 subprojects {
@@ -69,6 +57,19 @@ subprojects {
         testImplementation('junit:junit:4.12')
         testCompile('org.springframework.boot:spring-boot-starter-test',
                 "org.springframework:spring-test:$spring_version")
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = ["-Xjsr305=strict"]
+            jvmTarget = "1.8"
+        }
     }
 }
 
