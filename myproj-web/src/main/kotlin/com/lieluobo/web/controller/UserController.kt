@@ -90,7 +90,7 @@ class UserController {
         if (str.isNullOrEmpty()) {
             val user = this.userService.selectById(id)
             user ?: return GatewayResp()
-            manager.set("COMMON_USER_CACHE_BY_ID:" + id, JSON.toJSONString(user))
+            manager["COMMON_USER_CACHE_BY_ID:" + id] = JSON.toJSONString(user)
             return GatewayResp(user)
         }
         val user = JSON.parseObject(str, User::class.java)

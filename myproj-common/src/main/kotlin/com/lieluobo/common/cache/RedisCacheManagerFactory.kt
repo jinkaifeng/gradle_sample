@@ -13,8 +13,6 @@ class RedisCacheManagerFactory {
     @Autowired
     lateinit var commonCacheRedisTemplate: RedisTemplate<String, Serializable>
 
-    var default = DefaultRedisCachemanager()
-
     /**
      * 平台公共缓存
      */
