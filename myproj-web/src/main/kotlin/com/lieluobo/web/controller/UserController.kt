@@ -3,6 +3,8 @@ package com.lieluobo.web.controller
 import com.alibaba.fastjson.JSON
 import com.baomidou.mybatisplus.mapper.EntityWrapper
 import com.baomidou.mybatisplus.toolkit.StringUtils
+import com.example.demo.common.exception.DemoBusinessException
+import com.example.demo.common.exception.DemoBusinessExceptionCode
 import com.lieluobo.common.cache.RedisCacheManagerFactory
 import com.lieluobo.common.constants.Constants
 import com.lieluobo.dal.model.User
@@ -68,7 +70,7 @@ class UserController {
 
     @RequestMapping(Constants.DELETE_USER, method = [RequestMethod.POST])
     fun delete(@PathVariable("id") id: Long): GatewayResp<User> {
-        if(this.userService.deleteById(id)){
+        if (this.userService.deleteById(id)) {
             throw Exception("id不存在")
         }
         factory.getCommRedis()!!.del("COMMON_USER_CACHE_BY_ID:" + id)
@@ -78,19 +80,20 @@ class UserController {
     /**
      * 第一次从数据库取,之后从缓存取
      */
-    @RequestMapping(Constants.USER_CACHE, method = [RequestMethod.POST])
+    @RequestMapping(Constants.USER_CACHE, method = [RequestMethod.GET])
     fun selectCache(@PathVariable("id") id: Long): GatewayResp<User> {
-        var str = factory.getCommRedis()!!.getString("COMMON_USER_CACHE_BY_ID:" + id)
 
-        if(StringUtils.isEmpty(str)){
-            var user = this.userService.selectById(id)
-            if(user == null){
-                return GatewayResp()
-            }
-            factory.getCommRedis()!!.set("COMMON_USER_CACHE_BY_ID:" + id, JSON.toJSONString(user))
+        val manager = factory.getCommRedis()
+        manager ?: throw DemoBusinessException(DemoBusinessExceptionCode.SYSTEM_ERROR)
+
+        val str = manager.getString("COMMON_USER_CACHE_BY_ID:" + id)
+        if (str.isNullOrEmpty()) {
+            val user = this.userService.selectById(id)
+            user ?: return GatewayResp()
+            manager.set("COMMON_USER_CACHE_BY_ID:" + id, JSON.toJSONString(user))
             return GatewayResp(user)
         }
-        var user = JSON.parseObject(str, User::class.java)
+        val user = JSON.parseObject(str, User::class.java)
         return GatewayResp(user)
     }
 

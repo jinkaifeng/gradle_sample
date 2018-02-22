@@ -28,7 +28,7 @@ class DefaultRedisCachemanager : RedisCacheManager {
      *
      * @param redisTemplate the redisTemplate to set
      */
-    var redisTemplate: RedisTemplate<String, Serializable>?=null
+    var redisTemplate: RedisTemplate<String, Serializable>? = null
 
     /**
      * 获取DefaultSerializer
@@ -552,12 +552,16 @@ class DefaultRedisCachemanager : RedisCacheManager {
 
 
     @Throws(Exception::class)
-    override fun getString(key: String): String {
+    override fun getString(key: String): String? {
         return execute(RedisCallback { connection ->
             selectDb(connection)
             val keyBytes = stringSerializer.serialize(key)
             val valueBytes = connection.get(keyBytes)
-            stringSerializer.deserialize(valueBytes)
+            if (valueBytes == null || valueBytes.isEmpty()) {
+                null
+            } else {
+                stringSerializer.deserialize(valueBytes)
+            }
         })
     }
 

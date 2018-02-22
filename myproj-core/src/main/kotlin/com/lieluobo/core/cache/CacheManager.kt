@@ -85,7 +85,7 @@ interface CacheManager {
      * @throws Exception
      */
     @Throws(Exception::class)
-    fun getString(key: String): String
+    fun getString(key: String): String?
 
     /**
      * 从缓存中读取 到固定的对象
